@@ -1,3 +1,5 @@
+package projet;
+
 import java.util.Scanner;
 
 public class Jeu {
