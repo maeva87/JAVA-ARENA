@@ -1,22 +1,32 @@
 package projet;
 
 import java.util.List;
+import java.util.ArrayList;
 
 public class Dresseur {
+    // Attributs
     private String nom;
     private List<Monstre> equipe;
-    int monstreActifIndex = 0;
-
-    public Dresseur(String nom, List<Monstre> equipe) {
+    private int monstreActifIndex;
+    // Constructeur
+    public Dresseur(String nom) {
         this.nom = nom;
-        this.equipe = equipe;
+        this.equipe = new ArrayList<>();
+        this.monstreActifIndex = 0;
     }
-
+    // Getters
     public String getNom() {
         return nom;
     }
 
+    public List<Monstre> getEquipe() {
+        return equipe;
+    }
+    // Méthodes
     public Monstre getMonstreActif() {
+        if (equipe.isEmpty()) {
+            return null;
+        }
         return equipe.get(monstreActifIndex);
     }
     public boolean changerMonstre (int index) {
@@ -46,5 +56,14 @@ public class Dresseur {
         }
         equipe.add(monstre);
         return true;
+    }
+    public void afficherEquipe() {
+        System.out.println("Équipe de " + nom + " :");
+        for (int i = 0; i < equipe.size(); i++) {
+            Monstre m = equipe.get(i);
+            String statut = m.estKO() ? " (KO)" : "";
+            String actif = (i == monstreActifIndex) ? " [Actif]" : "";
+            System.out.println((i + 1) + ". " + m.getNom() + " - PV: " + m.getPvActuels() + "/" + m.getPvMax() + statut + actif);
+        }
     }
 }
