@@ -2,9 +2,11 @@ import java.util.Scanner;
 
 public class Jeu {
     private Scanner scanner;
+    private int credits;
     
     public Jeu() {
         this.scanner = new Scanner(System.in);
+        this.credits = 10; // Crédit de base pour le joueur
     }
     
     public void demarrer() {
@@ -51,8 +53,35 @@ public class Jeu {
     }
     
     private void boutique() {
-        System.out.println("Boutique (pas encore implémenté)");
+    while (true) {
+        System.out.println("\n=== BOUTIQUE ===");
+        System.out.println("Crédits : " + credits);
+        System.out.println("\n1 -> Item 1 - 3 crédits");
+        System.out.println("2 -> Item 2 - 10 crédits");
+        System.out.println("3 -> Item 3 - 1 crédits");
+        System.out.println("4 -> Retour");
+        
+        System.out.print("\nVotre choix : ");
+        String choix = scanner.nextLine();
+        
+        if (choix.equals("1")) {
+            System.out.println("Achat Item 1 (pas encore implémenté)");
+        } else if (choix.equals("2")) {
+            System.out.println("Achat Item 2 (pas encore implémenté)");
+        } else if (choix.equals("3")) {
+            System.out.println("Achat Item 3 (pas encore implémenté)");
+        } else if (choix.equals("4")) {
+            break; // Retour au menu principal
+        } else {
+            System.out.println("❌ Choix invalide !");
+        }
     }
+}
+
+private void acheterItem(int numeroItem, int prix) {
+    System.out.println("Achat de l'item " + numeroItem + " (pas encore implémenté)");
+    // pour plus tard : vérifier si assez de crédits, retirer credit du joueur, ajouter l'item
+}
     
     private void quitter() {
         System.out.println("Au revoir !");
