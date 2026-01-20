@@ -33,7 +33,7 @@ public class Jeu {
                 quitter();
                 break;
             } else {
-                System.out.println("❌ Choix invalide !");
+                System.out.println("Choix invalide !");
             }
         }
         
@@ -65,22 +65,27 @@ public class Jeu {
         String choix = scanner.nextLine();
         
         if (choix.equals("1")) {
-            System.out.println("Achat Item 1 (pas encore implémenté)");
+            acheterItem(1, 3);
         } else if (choix.equals("2")) {
-            System.out.println("Achat Item 2 (pas encore implémenté)");
+            acheterItem(2, 10);
         } else if (choix.equals("3")) {
-            System.out.println("Achat Item 3 (pas encore implémenté)");
+            acheterItem(3, 1);
         } else if (choix.equals("4")) {
             break; // Retour au menu principal
         } else {
-            System.out.println("❌ Choix invalide !");
+            System.out.println("Choix invalide !");
         }
     }
 }
 
 private void acheterItem(int numeroItem, int prix) {
-    System.out.println("Achat de l'item " + numeroItem + " (pas encore implémenté)");
-    // pour plus tard : vérifier si assez de crédits, retirer credit du joueur, ajouter l'item
+    if (credits >= prix) {
+        credits -= prix;
+        System.out.println("Item " + numeroItem + " acheté avec succès !");
+        System.out.println("Crédits restants : " + credits);
+    } else {
+        System.out.println("Pas assez de crédits ! Il vous manque " + (prix - credits) + " crédits.");
+    }
 }
     
     private void quitter() {
