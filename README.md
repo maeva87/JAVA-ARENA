@@ -143,6 +143,15 @@ projet/
 
 <img width="406" height="132" alt="image" src="https://github.com/user-attachments/assets/bfc34fe3-9100-4c12-a7cf-a04b5e035b16" />
 
+<img width="472" height="305" alt="image" src="https://github.com/user-attachments/assets/ab920dd4-7d60-4505-ba70-ea41e7b4927d" />
+
+<img width="487" height="337" alt="image" src="https://github.com/user-attachments/assets/2ef48c36-c641-49c3-b540-44d8a7f3817b" />
+
+<img width="366" height="222" alt="image" src="https://github.com/user-attachments/assets/1165fc46-3858-46e9-b136-f255b0b2558e" />
+
+<img width="255" height="190" alt="image" src="https://github.com/user-attachments/assets/061654db-7c53-4d58-a0e3-3134c5653f1c" />
+
+<img width="486" height="194" alt="image" src="https://github.com/user-attachments/assets/2bbe46f4-4f64-4677-af17-8049470c9aa1" />
 
 
 ## Licence
