@@ -92,7 +92,7 @@ public class Jeu {
                 creerNouvellePartie();
                 break;
             case "2":
-                System.out.println("Chargement (pas encore implémenté)");
+                chargerPartie();
                 break;
             case "3":
                 break;
@@ -267,7 +267,7 @@ public class Jeu {
         
         switch (choix) {
             case "1":
-                System.out.println("Sauvegarde (pas encore implémenté)");
+                Sauvegarde.sauvegarder(joueur, credits);
                 System.out.println("Au revoir !");
                 enPartie = false;
                 break;
@@ -280,5 +280,38 @@ public class Jeu {
             default:
                 System.out.println("Choix invalide !");
         }
+    }
+    
+    private void chargerPartie() {
+        if (!Sauvegarde.sauvegardeExiste()) {
+            System.out.println("Aucune sauvegarde trouvée !");
+            return;
+        }
+        
+        DonneesSauvegarde donnees = Sauvegarde.charger();
+        if (donnees == null) {
+            return;
+        }
+        
+        // Recréer le joueur avec les données chargées
+        joueur = new Dresseur(donnees.nomDresseur);
+        credits = donnees.credits;
+        
+        // Ajouter les monstres
+        for (Monstre m : donnees.monstres) {
+            joueur.ajouterMonstre(m);
+        }
+        
+        // Restaurer l'inventaire
+        joueur.getInventaire().getObjets().clear();
+        for (java.util.Map.Entry<String, Integer> entry : donnees.inventaire.entrySet()) {
+            joueur.getInventaire().ajouterObjet(entry.getKey(), entry.getValue());
+        }
+        
+        System.out.println("Bienvenue " + joueur.getNom() + " !");
+        System.out.println("Crédits : " + credits);
+        joueur.afficherEquipe();
+        
+        enPartie = true;
     }
 }
