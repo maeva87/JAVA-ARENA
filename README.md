@@ -135,7 +135,7 @@ projet/
 
 ## Screenshots
 
-> *Ajoutez ici vos captures d'écran du jeu*
+![alt text](image.png)
 
 ## Licence
 
