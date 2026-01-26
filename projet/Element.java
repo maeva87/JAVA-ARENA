@@ -3,15 +3,15 @@ package projet;
 public enum Element {
     FEU,
     EAU,
-    PlANTE;
+    PLANTE;
 
     public boolean estEfficaceContre(Element autre) {
         switch (this) {
             case FEU:
-                return autre == PlANTE;
+                return autre == PLANTE;
             case EAU:
                 return autre == FEU;
-            case PlANTE:
+            case PLANTE:
                 return autre == EAU;
             default:
                 return false;
