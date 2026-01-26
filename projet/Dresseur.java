@@ -107,7 +107,7 @@ public class Dresseur {
     }
     
     // Utiliser une potion de soin
-    public void utiliserPotion(int indexMonstre) throws MonstreDejaEnPleineSanteException {
+    public void utiliserPotion(int indexMonstre) throws MonstreFullPVException {
         if (!inventaire.possede("Potion")) {
             System.out.println("Vous n'avez pas de potion !");
             return;
@@ -125,8 +125,8 @@ public class Dresseur {
             return;
         }
         
-        if (cible.getPvActuels() == cible.getPvMax()) {
-            throw new MonstreDejaEnPleineSanteException("Ce monstre a déjà tous ses PV !");
+        if (cible.estFullPV()) {
+            throw new MonstreFullPVException("Ce monstre a déjà tous ses PV !");
         }
     
         cible.soigner(20);
@@ -152,9 +152,9 @@ public class Dresseur {
             return;
         }
     
-        cible.soigner(cible.getPvMax()); // Restaure tous les PV
+        cible.ressusciter(cible.getPvMax() / 2); // Restaure 50% des PV
         inventaire.utiliserObjet("Elixir");
-        System.out.println(cible.getNom() + " est ressuscité avec tous ses PV !");
+        System.out.println(cible.getNom() + " est ressuscité avec " + cible.getPvActuels() + " PV !");
     }
     
     // Capturer un monstre sauvage avec un Filet
