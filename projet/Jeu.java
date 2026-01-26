@@ -119,10 +119,86 @@ public class Jeu {
         System.out.println("\n=== MON ÉQUIPE ===");
         for (int i = 0; i < joueur.getEquipe().size(); i++) {
             Monstre m = joueur.getEquipe().get(i);
-            System.out.println((i + 1) + ". " + m.getNom() + " - " + m.getPvActuels() + "/" + m.getPvMax() + " PV - " + m.getElement().toString().toLowerCase());
+            String statut = m.estKO() ? " [KO]" : "";
+            System.out.println((i + 1) + ". " + m.getNom() + " - " + m.getPvActuels() + "/" + m.getPvMax() + " PV - " + m.getElement().toString().toLowerCase() + statut);
         }
-        System.out.println("\nAppuyez sur Entrée pour revenir au menu...");
-        scanner.nextLine();
+        
+        System.out.println("\n--- Inventaire ---");
+        joueur.getInventaire().afficher();
+        
+        System.out.println("\n1 -> Utiliser une Potion (soigne 50 PV)");
+        System.out.println("2 -> Utiliser un Elixir (ressuscite un monstre KO)");
+        System.out.println("3 -> Retour");
+        
+        System.out.print("\nVotre choix : ");
+        String choix = scanner.nextLine();
+        
+        switch (choix) {
+            case "1":
+                utiliserPotionEquipe();
+                break;
+            case "2":
+                utiliserElixirEquipe();
+                break;
+            case "3":
+                break;
+            default:
+                System.out.println("Choix invalide !");
+        }
+    }
+    
+    private void utiliserPotionEquipe() {
+        if (!joueur.getInventaire().possede("Potion")) {
+            System.out.println("Vous n'avez pas de Potion !");
+            return;
+        }
+        
+        System.out.print("Sur quel monstre ? (numéro) : ");
+        try {
+            int index = Integer.parseInt(scanner.nextLine()) - 1;
+            if (index < 0 || index >= joueur.getEquipe().size()) {
+                System.out.println("Numéro invalide !");
+                return;
+            }
+            Monstre cible = joueur.getEquipe().get(index);
+            if (cible.estKO()) {
+                System.out.println("Ce monstre est KO ! Utilisez un Elixir.");
+                return;
+            }
+            joueur.getInventaire().utiliserObjet("Potion");
+            cible.soigner(50);
+            System.out.println(cible.getNom() + " récupère des PV ! (" + cible.getPvActuels() + "/" + cible.getPvMax() + ")");
+        } catch (NumberFormatException e) {
+            System.out.println("Entrée invalide !");
+        } catch (MonstreFullPVException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    private void utiliserElixirEquipe() {
+        if (!joueur.getInventaire().possede("Elixir")) {
+            System.out.println("Vous n'avez pas d'Elixir !");
+            return;
+        }
+        
+        System.out.print("Quel monstre KO ressusciter ? (numéro) : ");
+        try {
+            int index = Integer.parseInt(scanner.nextLine()) - 1;
+            if (index < 0 || index >= joueur.getEquipe().size()) {
+                System.out.println("Numéro invalide !");
+                return;
+            }
+            Monstre cible = joueur.getEquipe().get(index);
+            if (!cible.estKO()) {
+                System.out.println("Ce monstre n'est pas KO !");
+                return;
+            }
+            joueur.getInventaire().utiliserObjet("Elixir");
+            cible.ressusciter(cible.getPvMax() / 2);
+            System.out.println(cible.getNom() + " est ressuscité avec " + cible.getPvActuels() + " PV !");
+        } catch (NumberFormatException e) {
+            System.out.println("Entrée invalide !");
+        }
     }
     
     private void afficherJoueur() {
@@ -367,11 +443,11 @@ public class Jeu {
             return;
         }
         
-        // Recréer le joueur avec les données chargées
-        joueur = new Dresseur(donnees.nomDresseur);
+        // Recréer le joueur avec les données chargées (sans monstres aléatoires)
+        joueur = new Dresseur(donnees.nomDresseur, true);
         credits = donnees.credits;
         
-        // Ajouter les monstres
+        // Ajouter les monstres sauvegardés
         for (Monstre m : donnees.monstres) {
             joueur.ajouterMonstre(m);
         }

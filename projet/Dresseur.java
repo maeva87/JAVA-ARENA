@@ -11,7 +11,7 @@ public class Dresseur {
     private Inventaire inventaire;
     private int credits;
     
-    // Constructeur avec sélection aléatoire de 3 monstres
+    // Constructeur avec sélection aléatoire de 3 monstres (nouvelle partie)
     public Dresseur(String nom) {
         this.nom = nom;
         this.equipe = new ArrayList<>();
@@ -26,6 +26,16 @@ public class Dresseur {
                 equipe.add(monstreAleatoire);
             }
         }
+    }
+    
+    // Constructeur pour le chargement (sans monstres aléatoires)
+    public Dresseur(String nom, boolean chargement) {
+        this.nom = nom;
+        this.equipe = new ArrayList<>();
+        this.monstreActifIndex = 0;
+        this.credits = 0;
+        this.inventaire = new Inventaire();
+        // Pas d'ajout de monstres - ils seront ajoutés depuis la sauvegarde
     }
     
     // Getters
