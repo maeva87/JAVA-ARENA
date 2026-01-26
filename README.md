@@ -143,6 +143,7 @@ projet/
 
 <img width="406" height="132" alt="image" src="https://github.com/user-attachments/assets/bfc34fe3-9100-4c12-a7cf-a04b5e035b16" />
 
+<img width="472" height="305" alt="image" src="https://github.com/user-attachments/assets/ab920dd4-7d60-4505-ba70-ea41e7b4927d" />
 
 
 ## Licence
