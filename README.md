@@ -19,9 +19,9 @@ java projet.Main
 
 - **Combat au tour par tour** : affrontez des monstres sauvages générés aléatoirement
 - **Mécanique Pierre-Feuille-Ciseaux** :
-  - 🔥 Feu > 🌿 Plante (x2 dégâts)
-  - 🌿 Plante > 💧 Eau (x2 dégâts)
-  - 💧 Eau > 🔥 Feu (x2 dégâts)
+  - Feu > Plante (x2 dégâts)
+  - Plante > Eau (x2 dégâts)
+  - Eau > Feu (x2 dégâts)
 - **Actions en combat** : Attaquer, Changer de monstre, Utiliser un objet, Fuir
 - **Système de KO** : un monstre à 0 PV ne peut plus combattre
 
@@ -29,9 +29,9 @@ java projet.Main
 
 - **3 monstres aléatoires** assignés à la création de la partie
 - **9 espèces disponibles** dans le Bestiaire :
-  - 🔥 Feu : Pyroxis, Flammix, Salamandre
-  - 💧 Eau : Aqualis, Hydrax, Tortank
-  - 🌿 Plante : Terragon, Verdax, Floramis
+  - Feu : Pyroxis, Flammix, Salamandre
+  - Eau : Aqualis, Hydrax, Tortank
+  - Plante : Terragon, Verdax, Floramis
 - **Caractéristiques** : Nom, PV actuels/max, Puissance d'attaque, Élément
 
 ### Inventaire & Boutique
@@ -81,9 +81,9 @@ java projet.Main
 
 ### Robustesse
 
-- ✅ Gestion des saisies invalides (lettres au lieu de chiffres)
-- ✅ Aucun crash possible grâce aux try-catch
-- ✅ Validation de toutes les actions utilisateur
+- Gestion des saisies invalides (lettres au lieu de chiffres)
+- Aucun crash possible grâce aux try-catch
+- Validation de toutes les actions utilisateur
 
 ## Commandes
 
