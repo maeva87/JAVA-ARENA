@@ -108,11 +108,6 @@ public class Jeu {
         String nom = scanner.nextLine();
         joueur = new Dresseur(nom);
         
-        // Ajouter 3 monstres aléatoires depuis le Bestiaire
-        for (int i = 0; i < 3; i++) {
-            joueur.ajouterMonstre(Bestiaire.creerMonstreAleatoire());
-        }
-        
         System.out.println("\nNouvelle partie créée !");
         System.out.println("Votre équipe :");
         joueur.afficherEquipe();
