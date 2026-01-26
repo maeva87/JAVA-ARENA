@@ -139,7 +139,7 @@ projet/
 
 <img width="436" height="346" alt="image" src="https://github.com/user-attachments/assets/c308c0e9-919e-43f5-846e-8c31a85bdfe4" />
 
-<img width="326" height="104" alt="image" src="https://github.com/user-attachments/assets/797dff2c-4a94-42b4-a711-4720029a85cf" />
+<img width="472" height="366" alt="image" src="https://github.com/user-attachments/assets/b61fd99d-222e-4fb1-ba02-b44c0df00902" />
 
 <img width="406" height="132" alt="image" src="https://github.com/user-attachments/assets/bfc34fe3-9100-4c12-a7cf-a04b5e035b16" />
 
