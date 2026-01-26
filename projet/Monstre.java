@@ -1,22 +1,20 @@
 package projet;
 
-public class Monstre {
-    // Attributs
+public abstract class Monstre {
     private String nom;
     private int pvActuels;
     private int pvMax;
     private int puissanceAttaque;
     private Element element;
 
-    // Constructeur
-    public Monstre(String nom, Element element, int pvMax, int puissanceAttaque) {
+    // Constructeur protégé (utilisable seulement par les classes enfants)
+    protected Monstre(String nom, Element element, int pvMax, int puissanceAttaque) {
         this.nom = nom;
         this.element = element;
         this.pvMax = pvMax;
         this.pvActuels = pvMax;
         this.puissanceAttaque = puissanceAttaque;
     }
-
     // Getters
     public String getNom() {
         return nom;

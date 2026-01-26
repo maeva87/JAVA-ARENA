@@ -63,7 +63,7 @@ public class Dresseur {
             Monstre m = equipe.get(i);
             String statut = m.estKO() ? " (KO)" : "";
             String actif = (i == monstreActifIndex) ? " [Actif]" : "";
-            System.out.println((i + 1) + ". " + m.getNom() + " - PV: " + m.getPvActuels() + "/" + m.getPvMax() + statut + actif);
+            System.out.println(i  + ". " + m.getNom() + " - PV: " + m.getPvActuels() + "/" + m.getPvMax() + statut + actif);
         }
     }
 }
