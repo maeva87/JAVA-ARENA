@@ -123,7 +123,6 @@ public class Jeu {
             System.out.println((i + 1) + ". " + m.getNom() + " - " + m.getPvActuels() + "/" + m.getPvMax() + " PV - " + m.getElement().toString().toLowerCase() + statut);
         }
         
-        System.out.println("\n--- Inventaire ---");
         joueur.getInventaire().afficher();
         
         System.out.println("\n1 -> Utiliser une Potion (soigne 50 PV)");
@@ -370,7 +369,7 @@ public class Jeu {
                     joueur.getInventaire().utiliserObjet("Filet");
                     java.util.Random random = new java.util.Random();
                     if (random.nextInt(100) < 70) {
-                        System.out.println("Capture réussie ! " + monstreSauvage.getNom() + " rejoint votre équipe !");
+                        System.out.println("Capture réussie !");
                         // Créer le monstre capturé avec la bonne sous-classe
                         Monstre monstreCapture;
                         switch (monstreSauvage.getElement()) {
@@ -388,7 +387,32 @@ public class Jeu {
                         if (degatsSubis > 0) {
                             monstreCapture.recevoirDegats(degatsSubis);
                         }
-                        joueur.ajouterMonstre(monstreCapture);
+                        
+                        // Vérifier si l'équipe est complète
+                        if (joueur.getEquipe().size() >= 6) {
+                            System.out.println("Votre équipe est complète ! Voulez-vous remplacer un monstre ?");
+                            joueur.afficherEquipe();
+                            System.out.println("0 -> Relâcher " + monstreCapture.getNom());
+                            System.out.print("Quel monstre remplacer ? (numéro ou 0) : ");
+                            try {
+                                int indexRemplace = Integer.parseInt(scanner.nextLine());
+                                if (indexRemplace == 0) {
+                                    System.out.println(monstreCapture.getNom() + " a été relâché.");
+                                } else if (indexRemplace >= 1 && indexRemplace <= joueur.getEquipe().size()) {
+                                    Monstre ancienMonstre = joueur.getEquipe().get(indexRemplace - 1);
+                                    joueur.getEquipe().set(indexRemplace - 1, monstreCapture);
+                                    System.out.println(ancienMonstre.getNom() + " a été relâché. " + monstreCapture.getNom() + " rejoint votre équipe !");
+                                } else {
+                                    System.out.println("Choix invalide. " + monstreCapture.getNom() + " a été relâché.");
+                                }
+                            } catch (NumberFormatException e) {
+                                System.out.println("Entrée invalide. " + monstreCapture.getNom() + " a été relâché.");
+                            }
+                        } else {
+                            joueur.ajouterMonstre(monstreCapture);
+                            System.out.println(monstreCapture.getNom() + " rejoint votre équipe !");
+                        }
+                        
                         monstreSauvage.recevoirDegats(monstreSauvage.getPvActuels()); // KO pour terminer combat
                     } else {
                         System.out.println("Le monstre s'est échappé du filet !");
