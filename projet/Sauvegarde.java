@@ -59,8 +59,21 @@ public class Sauvegarde {
                         int pvMax = Integer.parseInt(parts[4]);
                         int puissance = Integer.parseInt(parts[5]);
                         
-                        // Créer le monstre avec ses stats
-                        Monstre monstre = new Monstre(nom, element, pvMax, puissance) {};
+                        // Créer le monstre avec la bonne sous-classe
+                        Monstre monstre;
+                        switch (element) {
+                            case FEU:
+                                monstre = new MonstreFeu(nom, pvMax, puissance);
+                                break;
+                            case EAU:
+                                monstre = new MonstreEau(nom, pvMax, puissance);
+                                break;
+                            case PLANTE:
+                                monstre = new MonstrePlante(nom, pvMax, puissance);
+                                break;
+                            default:
+                                throw new IllegalArgumentException("Élément inconnu: " + element);
+                        }
                         // Ajuster les PV actuels (infliger les dégâts subis)
                         int degatsSubis = pvMax - pvActuels;
                         if (degatsSubis > 0) {
