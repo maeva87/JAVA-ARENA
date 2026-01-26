@@ -31,20 +31,21 @@ public class Combat {
             throw new CibleDejaKOException("Impossible d'attaquer : la cible est déjà KO !");
         }
         
+        // Déterminer les labels (joueur vs adversaire)
+        String labelAttaquant = (attaquant == dresseur1) ? "Votre " + monstreAttaquant.getNom() : "L'adversaire " + monstreAttaquant.getNom();
+        String labelDefenseur = (defenseur == dresseur1) ? "votre " + monstreDefenseur.getNom() : "l'adversaire " + monstreDefenseur.getNom();
+        
         // Calcul et application des dégâts
         int degats = calculerDegats(monstreAttaquant, monstreDefenseur);
         
-        System.out.println(monstreAttaquant.getNom() + " attaque " + 
-        monstreDefenseur.getNom() + " !");
+        System.out.println(labelAttaquant + " attaque " + labelDefenseur + " !");
         monstreDefenseur.recevoirDegats(degats);
-        System.out.println(monstreDefenseur.getNom() + " perd " + degats + " PV !");
         
         if (monstreDefenseur.estKO()) {
-            System.out.println(monstreDefenseur.getNom() + " est KO !");
+            System.out.println(labelDefenseur + " perd " + degats + " PV et est KO !");
         } else {
-            System.out.println(monstreDefenseur.getNom() + " : " + 
-            monstreDefenseur.getPvActuels() + "/" + 
-            monstreDefenseur.getPvMax() + " PV");
+            System.out.println(labelDefenseur + " perd " + degats + " PV ! (" + 
+            monstreDefenseur.getPvActuels() + "/" + monstreDefenseur.getPvMax() + " PV restants)");
         }
     }
 
