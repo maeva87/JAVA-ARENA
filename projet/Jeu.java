@@ -49,7 +49,7 @@ public class Jeu {
     private void menuEnJeu() {
         while (enPartie) {
             System.out.println("\n=== MENU EN JEU ===");
-            System.out.println("1. Mon équipe (affiche l'état -> PV par monstres)");
+            System.out.println("1. Mon équipe");
             System.out.println("2. Mon joueur");
             System.out.println("3. Lancer un combat");
             System.out.println("4. Boutique");
