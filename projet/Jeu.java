@@ -6,22 +6,23 @@ public class Jeu {
     private Scanner scanner;
     private int credits;
     private Dresseur joueur;
+    private boolean enPartie;
     
     public Jeu() {
         this.credits = 10;
         this.joueur = null;
+        this.enPartie = false;
     }
     
     public void demarrer() {
         try (Scanner scanner = new Scanner(System.in)) {
             this.scanner = scanner;
-            while (true) {
+            
+            // Menu principal (avant de lancer une partie)
+            while (!enPartie) {
                 System.out.println("\n=== MENU PRINCIPAL ===");
                 System.out.println("1. Commencer une nouvelle partie ou charger une partie existante");
-                System.out.println("2. Mon équipe (affiche l'état -> PV par monstres)");
-                System.out.println("3. Mon joueur");
-                System.out.println("4. Boutique");
-                System.out.println("5. Quitter");
+                System.out.println("2. Quitter");
                 
                 System.out.print("\nVotre choix : ");
                 String choix = scanner.nextLine();
@@ -31,20 +32,44 @@ public class Jeu {
                         nouvelleOuChargerPartie();
                         break;
                     case "2":
-                        afficherEquipe();
-                        break;
-                    case "3":
-                        afficherJoueur();
-                        break;
-                    case "4":
-                        boutique();
-                        break;
-                    case "5":
-                        quitter();
+                        System.out.println("Au revoir !");
                         return;
                     default:
                         System.out.println("Choix invalide !");
                 }
+            }
+            
+            // Menu en jeu (une fois la partie lancée)
+            menuEnJeu();
+        }
+    }
+    
+    private void menuEnJeu() {
+        while (enPartie) {
+            System.out.println("\n=== MENU EN JEU ===");
+            System.out.println("1. Mon équipe (affiche l'état -> PV par monstres)");
+            System.out.println("2. Mon joueur");
+            System.out.println("3. Boutique");
+            System.out.println("4. Quitter");
+            
+            System.out.print("\nVotre choix : ");
+            String choix = scanner.nextLine();
+            
+            switch (choix) {
+                case "1":
+                    afficherEquipe();
+                    break;
+                case "2":
+                    afficherJoueur();
+                    break;
+                case "3":
+                    boutique();
+                    break;
+                case "4":
+                    quitter();
+                    break;
+                default:
+                    System.out.println("Choix invalide !");
             }
         }
     }
@@ -85,32 +110,27 @@ public class Jeu {
         System.out.println("\nNouvelle partie créée !");
         System.out.println("Votre équipe :");
         joueur.afficherEquipe();
+        
+        enPartie = true;
     }
     
     private void afficherEquipe() {
-        if (joueur == null) {
-            System.out.println("Aucune partie en cours ! Créez d'abord une partie.");
-            return;
-        }
-        
         System.out.println("\n=== MON ÉQUIPE ===");
         for (int i = 0; i < joueur.getEquipe().size(); i++) {
             Monstre m = joueur.getEquipe().get(i);
-            System.out.println("Monstre " + (i + 1) + " - " + m.getPvActuels() + " PV - " + m.getElement().toString().toLowerCase());
+            System.out.println((i + 1) + ". " + m.getNom() + " - " + m.getPvActuels() + "/" + m.getPvMax() + " PV - " + m.getElement().toString().toLowerCase());
         }
-        System.out.println((joueur.getEquipe().size() + 1) + " -> Retour");
+        System.out.println("\nAppuyez sur Entrée pour revenir au menu...");
+        scanner.nextLine();
     }
     
     private void afficherJoueur() {
-        if (joueur == null) {
-            System.out.println("Aucune partie en cours !");
-            return;
-        }
-        
         System.out.println("\n=== MON JOUEUR ===");
         System.out.println("Équipe : " + joueur.getNom());
         System.out.println("Crédits : " + credits);
         System.out.println("Monstres : " + joueur.getEquipe().size());
+        System.out.println("\nAppuyez sur Entrée pour revenir au menu...");
+        scanner.nextLine();
     }
     
     private void boutique() {
@@ -166,12 +186,13 @@ public class Jeu {
             case "1":
                 System.out.println("Sauvegarde (pas encore implémenté)");
                 System.out.println("Au revoir !");
+                enPartie = false;
                 break;
             case "2":
                 System.out.println("Au revoir !");
+                enPartie = false;
                 break;
             case "3":
-                demarrer();
                 break;
             default:
                 System.out.println("Choix invalide !");
