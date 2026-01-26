@@ -15,7 +15,7 @@ public class Sauvegarde {
             // Lignes monstres: MONSTRE;NOM;ELEMENT;PV_ACTUELS;PV_MAX;PUISSANCE
             for (Monstre m : joueur.getEquipe()) {
                 writer.println("MONSTRE;" + m.getNom() + ";" + m.getElement() + ";" + 
-                              m.getPvActuels() + ";" + m.getPvMax() + ";" + m.getPuissanceAttaque());
+                            m.getPvActuels() + ";" + m.getPvMax() + ";" + m.getPuissanceAttaque());
             }
             
             // Lignes inventaire: ITEM;NOM;QUANTITE

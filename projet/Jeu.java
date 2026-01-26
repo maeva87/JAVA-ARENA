@@ -348,7 +348,7 @@ public class Jeu {
                 if (random.nextInt(100) < 70) {
                     System.out.println("Capture réussie ! " + monstreSauvage.getNom() + " rejoint votre équipe !");
                     joueur.ajouterMonstre(new Monstre(monstreSauvage.getNom(), monstreSauvage.getElement(), 
-                                         monstreSauvage.getPvMax(), monstreSauvage.getPuissanceAttaque()) {});
+                                        monstreSauvage.getPvMax(), monstreSauvage.getPuissanceAttaque()) {});
                     monstreSauvage.recevoirDegats(monstreSauvage.getPvActuels()); // KO pour terminer combat
                 } else {
                     System.out.println("Le monstre s'est échappé du filet !");
