@@ -62,10 +62,10 @@ public class Boutique {
         if (credits >= objet.getPrix()) {
             credits -= objet.getPrix();
             inventaire.ajouterObjet(objet.getNom(), 1);
-            System.out.println("✓ " + objet.getNom() + " acheté !");
+            System.out.println(objet.getNom() + " acheté !");
             System.out.println("Crédits restants : " + credits);
         } else {
-            System.out.println("✗ Pas assez de crédits ! (manque " + (objet.getPrix() - credits) + ")");
+            System.out.println("Pas assez de crédits ! (manque " + (objet.getPrix() - credits) + ")");
         }
         return credits;
     }
