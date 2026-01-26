@@ -237,7 +237,7 @@ public class Jeu {
             System.out.println("Un " + monstreSauvage.getNom() + " sauvage (" + monstreSauvage.getElement() + ") apparaît !");
             System.out.println("PV: " + monstreSauvage.getPvActuels() + "/" + monstreSauvage.getPvMax() + " - Attaque: " + monstreSauvage.getPuissanceAttaque());
 
-            while (!combat.combatTermine()) {
+            while (!combat.combatTermine() && !fuite) {
                 combat.afficherEtatCombat();
                 System.out.println("1 -> Attaquer");
                 System.out.println("2 -> Changer de monstre");
@@ -271,8 +271,7 @@ public class Jeu {
                         break;
                     case "4":
                         System.out.println("Vous avez fui le combat !");
-                        fuite = true;
-                        break;
+                        return;
                     default:
                         System.out.println("Choix invalide !");
                 }
