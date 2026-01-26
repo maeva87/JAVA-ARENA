@@ -222,75 +222,85 @@ public class Jeu {
             System.out.println("Tous vos monstres sont KO ! Soignez-les d'abord.");
             return;
         }
-        
-        // Créer un monstre sauvage aléatoire depuis le Bestiaire
-        Monstre monstreSauvage = Bestiaire.creerMonstreAleatoire();
-        
-        // Créer un dresseur ennemi pour le combat
-        Dresseur ennemi = new Dresseur("Sauvage");
-        ennemi.ajouterMonstre(monstreSauvage);
-        
-        Combat combat = new Combat(joueur, ennemi);
-        
-        System.out.println("\n=== COMBAT ===");
-        System.out.println("Un " + monstreSauvage.getNom() + " sauvage (" + monstreSauvage.getElement() + ") apparaît !");
-        System.out.println("PV: " + monstreSauvage.getPvActuels() + "/" + monstreSauvage.getPvMax() + " - Attaque: " + monstreSauvage.getPuissanceAttaque());
-        
+
         java.util.Random random = new java.util.Random();
-        
-        while (!combat.combatTermine()) {
-            combat.afficherEtatCombat();
-            
-            System.out.println("1 -> Attaquer");
-            System.out.println("2 -> Changer de monstre");
-            System.out.println("3 -> Utiliser un objet");
-            System.out.println("4 -> Fuir");
-            System.out.print("\nVotre choix : ");
-            String choix = scanner.nextLine();
-            
-            switch (choix) {
-                case "1":
-                    try {
-                        combat.attaquer(joueur, ennemi);
-                        if (!combat.combatTermine()) {
-                            combat.attaquer(ennemi, joueur);
+        boolean fuite = false;
+
+        while (joueur.aDesMonstresDisponibles() && !fuite) {
+            // Créer un monstre sauvage aléatoire depuis le Bestiaire
+            Monstre monstreSauvage = Bestiaire.creerMonstreAleatoire();
+            Dresseur ennemi = new Dresseur("Sauvage", true);
+            ennemi.ajouterMonstre(monstreSauvage);
+            Combat combat = new Combat(joueur, ennemi);
+
+            System.out.println("\n=== COMBAT ===");
+            System.out.println("Un " + monstreSauvage.getNom() + " sauvage (" + monstreSauvage.getElement() + ") apparaît !");
+            System.out.println("PV: " + monstreSauvage.getPvActuels() + "/" + monstreSauvage.getPvMax() + " - Attaque: " + monstreSauvage.getPuissanceAttaque());
+
+            while (!combat.combatTermine()) {
+                combat.afficherEtatCombat();
+                System.out.println("1 -> Attaquer");
+                System.out.println("2 -> Changer de monstre");
+                System.out.println("3 -> Utiliser un objet");
+                System.out.println("4 -> Fuir");
+                System.out.print("\nVotre choix : ");
+                String choix = scanner.nextLine();
+                switch (choix) {
+                    case "1":
+                        try {
+                            combat.attaquer(joueur, ennemi);
+                            if (!combat.combatTermine()) {
+                                combat.attaquer(ennemi, joueur);
+                            }
+                        } catch (MonstreKOException | CibleDejaKOException e) {
+                            System.out.println(e.getMessage());
                         }
-                    } catch (MonstreKOException | CibleDejaKOException e) {
-                        System.out.println(e.getMessage());
-                    }
-                    break;
-                case "2":
-                    joueur.afficherEquipe();
-                    System.out.print("Numéro du monstre : ");
-                    try {
-                        int index = Integer.parseInt(scanner.nextLine()) - 1;
-                        joueur.changerMonstre(index);
-                    } catch (NumberFormatException e) {
-                        System.out.println("Entrée invalide !");
-                    }
-                    break;
-                case "3":
-                    utiliserObjetCombat(combat, ennemi);
-                    break;
-                case "4":
-                    System.out.println("Vous avez fui le combat !");
-                    return;
-                default:
-                    System.out.println("Choix invalide !");
+                        break;
+                    case "2":
+                        joueur.afficherEquipe();
+                        System.out.print("Numéro du monstre : ");
+                        try {
+                            int index = Integer.parseInt(scanner.nextLine()) - 1;
+                            joueur.changerMonstre(index);
+                        } catch (NumberFormatException e) {
+                            System.out.println("Entrée invalide !");
+                        }
+                        break;
+                    case "3":
+                        utiliserObjetCombat(combat, ennemi);
+                        break;
+                    case "4":
+                        System.out.println("Vous avez fui le combat !");
+                        fuite = true;
+                        break;
+                    default:
+                        System.out.println("Choix invalide !");
+                }
+            }
+
+            Dresseur gagnant = combat.getGagnant();
+            if (gagnant == joueur && !fuite) {
+                int gain = 5 + random.nextInt(6);
+                credits += gain;
+                System.out.println("\n========================================");
+                System.out.println("         Combat gagné !");
+                System.out.println("========================================");
+                System.out.println("Vous avez vaincu " + monstreSauvage.getNom() + " !");
+                System.out.println("Gain : +" + gain + " credits");
+                System.out.println("========================================");
+                System.out.println("\nUn nouvel adversaire arrive !");
+                System.out.println("Appuyez sur Entrée pour continuer...");
+                scanner.nextLine();
+            } else if (!joueur.aDesMonstresDisponibles()) {
+                System.out.println("\n========================================");
+                System.out.println("         DEFAITE...");
+                System.out.println("========================================");
+                System.out.println("Tous vos monstres sont KO. La partie est terminée.");
+                System.out.println("========================================");
+                System.out.println("Appuyez sur Entrée pour retourner au menu...");
+                scanner.nextLine();
             }
         }
-        
-        Dresseur gagnant = combat.getGagnant();
-        if (gagnant == joueur) {
-            int gain = 5 + random.nextInt(6);
-            credits += gain;
-            System.out.println("\nVous avez gagné ! +" + gain + " crédits !");
-        } else {
-            System.out.println("\nVous avez perdu...");
-        }
-        
-        System.out.println("\nAppuyez sur Entrée pour continuer...");
-        scanner.nextLine();
     }
     
     private void utiliserObjetCombat(Combat combat, Dresseur ennemi) {
