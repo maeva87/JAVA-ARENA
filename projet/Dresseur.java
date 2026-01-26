@@ -24,10 +24,21 @@ public class Dresseur {
     }
     // Méthodes
     public Monstre getMonstreActif() {
-        if (equipe.isEmpty()) {
-            return null;
+    if (equipe.isEmpty()) {
+        return null;
+    }
+    // Vérifier si le monstre actuel est KO
+    if (equipe.get(monstreActifIndex).estKO()) {
+        // Chercher le premier monstre disponible
+        for (int i = 0; i < equipe.size(); i++) {
+            if (!equipe.get(i).estKO()) {
+                monstreActifIndex = i;
+                return equipe.get(i);
+            }
         }
-        return equipe.get(monstreActifIndex);
+        return null; // Tous KO
+    }
+    return equipe.get(monstreActifIndex);
     }
     public boolean changerMonstre (int index) {
         if (index < 0 || index >= equipe.size()) {
