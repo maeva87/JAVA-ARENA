@@ -141,9 +141,9 @@ public class Jeu {
         while (true) {
             System.out.println("\n=== BOUTIQUE ===");
             System.out.println("Crédits : " + credits);
-            System.out.println("\n1 -> Item 1 - 3 crédits");
-            System.out.println("2 -> Item 2 - 10 crédits");
-            System.out.println("3 -> Item 3 - 1 crédits");
+            System.out.println("\n1 -> Potion de soin (+50 PV) - 5 crédits");
+            System.out.println("2 -> Filet de capture - 8 crédits");
+            System.out.println("3 -> Elixir de vie (résurrection) - 15 crédits");
             System.out.println("4 -> Retour");
             
             System.out.print("\nVotre choix : ");
@@ -151,13 +151,13 @@ public class Jeu {
             
             switch (choix) {
                 case "1":
-                    acheterItem(1, 3);
+                    acheterItem("Potion", 5);
                     break;
                 case "2":
-                    acheterItem(2, 10);
+                    acheterItem("Filet", 8);
                     break;
                 case "3":
-                    acheterItem(3, 1);
+                    acheterItem("Elixir", 15);
                     break;
                 case "4":
                     return;
@@ -167,10 +167,15 @@ public class Jeu {
         }
     }
 
-    private void acheterItem(int numeroItem, int prix) {
+    private void acheterItem(String nomItem, int prix) {
+        if (joueur == null) {
+            System.out.println("Créez d'abord une partie !");
+            return;
+        }
         if (credits >= prix) {
             credits -= prix;
-            System.out.println("Item " + numeroItem + " acheté avec succès !");
+            joueur.getInventaire().ajouterObjet(nomItem, 1);
+            System.out.println(nomItem + " acheté avec succès !");
             System.out.println("Crédits restants : " + credits);
         } else {
             System.out.println("Pas assez de crédits ! Il vous manque " + (prix - credits) + " crédits.");
@@ -210,7 +215,8 @@ public class Jeu {
             
             System.out.println("1 -> Attaquer");
             System.out.println("2 -> Changer de monstre");
-            System.out.println("3 -> Fuir");
+            System.out.println("3 -> Utiliser un objet");
+            System.out.println("4 -> Fuir");
             System.out.print("\nVotre choix : ");
             String choix = scanner.nextLine();
             
@@ -229,13 +235,16 @@ public class Jeu {
                     joueur.afficherEquipe();
                     System.out.print("Numéro du monstre : ");
                     try {
-                        int index = Integer.parseInt(scanner.nextLine());
+                        int index = Integer.parseInt(scanner.nextLine()) - 1;
                         joueur.changerMonstre(index);
                     } catch (NumberFormatException e) {
                         System.out.println("Entrée invalide !");
                     }
                     break;
                 case "3":
+                    utiliserObjetCombat(combat, ennemi);
+                    break;
+                case "4":
                     System.out.println("Vous avez fui le combat !");
                     return;
                 default:
@@ -254,6 +263,104 @@ public class Jeu {
         
         System.out.println("\nAppuyez sur Entrée pour continuer...");
         scanner.nextLine();
+    }
+    
+    private void utiliserObjetCombat(Combat combat, Dresseur ennemi) {
+        joueur.getInventaire().afficher();
+        System.out.println("\n1 -> Potion (soigne 50 PV)");
+        System.out.println("2 -> Elixir (ressuscite un monstre KO)");
+        System.out.println("3 -> Filet (capture si PV < 30%)");
+        System.out.println("4 -> Retour");
+        
+        System.out.print("\nVotre choix : ");
+        String choix = scanner.nextLine();
+        
+        switch (choix) {
+            case "1":
+                if (!joueur.getInventaire().possede("Potion")) {
+                    System.out.println("Vous n'avez pas de Potion !");
+                    return;
+                }
+                joueur.afficherEquipe();
+                System.out.print("Sur quel monstre ? (numéro) : ");
+                try {
+                    int index = Integer.parseInt(scanner.nextLine()) - 1;
+                    if (index < 0 || index >= joueur.getEquipe().size()) {
+                        System.out.println("Numéro invalide !");
+                        return;
+                    }
+                    Monstre cible = joueur.getEquipe().get(index);
+                    if (cible.estKO()) {
+                        System.out.println("Ce monstre est KO ! Utilisez un Elixir.");
+                        return;
+                    }
+                    if (cible.getPvActuels() == cible.getPvMax()) {
+                        System.out.println("Ce monstre a déjà tous ses PV !");
+                        return;
+                    }
+                    joueur.getInventaire().utiliserObjet("Potion");
+                    cible.soigner(50);
+                    System.out.println(cible.getNom() + " récupère 50 PV ! (" + cible.getPvActuels() + "/" + cible.getPvMax() + ")");
+                } catch (NumberFormatException e) {
+                    System.out.println("Entrée invalide !");
+                }
+                break;
+                
+            case "2":
+                if (!joueur.getInventaire().possede("Elixir")) {
+                    System.out.println("Vous n'avez pas d'Elixir !");
+                    return;
+                }
+                joueur.afficherEquipe();
+                System.out.print("Quel monstre KO ressusciter ? (numéro) : ");
+                try {
+                    int index = Integer.parseInt(scanner.nextLine()) - 1;
+                    if (index < 0 || index >= joueur.getEquipe().size()) {
+                        System.out.println("Numéro invalide !");
+                        return;
+                    }
+                    Monstre cible = joueur.getEquipe().get(index);
+                    if (!cible.estKO()) {
+                        System.out.println("Ce monstre n'est pas KO !");
+                        return;
+                    }
+                    joueur.getInventaire().utiliserObjet("Elixir");
+                    cible.soigner(cible.getPvMax() / 2);
+                    System.out.println(cible.getNom() + " est ressuscité avec " + cible.getPvActuels() + " PV !");
+                } catch (NumberFormatException e) {
+                    System.out.println("Entrée invalide !");
+                }
+                break;
+                
+            case "3":
+                if (!joueur.getInventaire().possede("Filet")) {
+                    System.out.println("Vous n'avez pas de Filet !");
+                    return;
+                }
+                Monstre monstreSauvage = ennemi.getMonstreActif();
+                double pourcentagePV = (double) monstreSauvage.getPvActuels() / monstreSauvage.getPvMax() * 100;
+                if (pourcentagePV > 30) {
+                    System.out.println("Le monstre a trop de PV pour être capturé ! (" + String.format("%.0f", pourcentagePV) + "% restants, il faut < 30%)");
+                    return;
+                }
+                joueur.getInventaire().utiliserObjet("Filet");
+                java.util.Random random = new java.util.Random();
+                if (random.nextInt(100) < 70) {
+                    System.out.println("Capture réussie ! " + monstreSauvage.getNom() + " rejoint votre équipe !");
+                    joueur.ajouterMonstre(new Monstre(monstreSauvage.getNom(), monstreSauvage.getElement(), 
+                                         monstreSauvage.getPvMax(), monstreSauvage.getPuissanceAttaque()) {});
+                    monstreSauvage.recevoirDegats(monstreSauvage.getPvActuels()); // KO pour terminer combat
+                } else {
+                    System.out.println("Le monstre s'est échappé du filet !");
+                }
+                break;
+                
+            case "4":
+                return;
+                
+            default:
+                System.out.println("Choix invalide !");
+        }
     }
     
     private void quitter() {

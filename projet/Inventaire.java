@@ -11,8 +11,8 @@ public class Inventaire {
         this.objets = new HashMap<>();
         // Inventaire de départ
         objets.put("Potion", 3);          // Soigne 50 PV
-        objets.put("Resurrection", 1);     // Ressuscite un monstre KO avec 50% PV
-        objets.put("Pokeball", 2);         // Capture un monstre (si PV < 30%)
+        objets.put("Elixir", 1);          // Ressuscite un monstre KO avec 50% PV
+        objets.put("Filet", 2);           // Capture un monstre (si PV < 30%)
     }
     
     // Ajouter un objet (utilisé par la boutique)
