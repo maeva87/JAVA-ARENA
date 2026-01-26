@@ -14,7 +14,6 @@ Jeu de combat tactique au tour par tour en Java. Incarnez un dresseur, constitue
   - [Architecture POO](#architecture-poo)
   - [Collections Utilisées](#collections-utilisées)
   - [Exceptions Personnalisées](#exceptions-personnalisées)
-  - [Robustesse](#robustesse)
 - [Commandes](#commandes)
 - [Architecture](#architecture)
 - [Screenshots](#screenshots)
@@ -97,11 +96,6 @@ java projet.Main
 | `MonstreFullPVException` | Soigner un monstre avec tous ses PV |
 | `CaptureImpossibleException` | Capturer un monstre avec > 30% PV |
 
-### Robustesse
-
-- Gestion des saisies invalides (lettres au lieu de chiffres)
-- Aucun crash possible grâce aux try-catch
-- Validation de toutes les actions utilisateur
 
 ## Commandes
 
