@@ -29,24 +29,37 @@ public class Boutique {
         while (true) {
             System.out.println("\n=== BOUTIQUE ===");
             System.out.println("Crédits disponibles : " + credits);
+            // Afficher l'inventaire du joueur
+            System.out.println("Inventaire :");
+            boolean inventaireVide = true;
+            for (String nom : new String[]{"Potion", "Super Potion", "Elixir", "Filet"}) {
+                int qte = inventaire.getQuantite(nom);
+                if (qte > 0) {
+                    System.out.println("- " + nom + " x" + qte);
+                    inventaireVide = false;
+                }
+            }
+            if (inventaireVide) {
+                System.out.println("Aucun objet");
+            }
             System.out.println();
-            
+
             // Afficher le catalogue
             for (int i = 0; i < catalogue.size(); i++) {
                 System.out.println((i + 1) + ". " + catalogue.get(i));
             }
             System.out.println((catalogue.size() + 1) + ". Retour");
-            
+
             System.out.print("\nVotre choix : ");
             String choix = scanner.nextLine();
-            
+
             try {
                 int index = Integer.parseInt(choix) - 1;
-                
+
                 if (index == catalogue.size()) {
                     return credits; // Retour
                 }
-                
+
                 if (index >= 0 && index < catalogue.size()) {
                     credits = acheter(catalogue.get(index), credits, inventaire);
                 } else {
