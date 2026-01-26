@@ -7,11 +7,13 @@ public class Jeu {
     private int credits;
     private Dresseur joueur;
     private boolean enPartie;
+    private Boutique boutique;
     
     public Jeu() {
         this.credits = 10;
         this.joueur = null;
         this.enPartie = false;
+        this.boutique = new Boutique();
     }
     
     public void demarrer() {
@@ -67,7 +69,7 @@ public class Jeu {
                     lancerCombat();
                     break;
                 case "4":
-                    boutique();
+                    ouvrirBoutique();
                     break;
                 case "5":
                     quitter();
@@ -106,6 +108,11 @@ public class Jeu {
         String nom = scanner.nextLine();
         joueur = new Dresseur(nom);
         
+        // Ajouter 3 monstres aléatoires depuis le Bestiaire
+        for (int i = 0; i < 3; i++) {
+            joueur.ajouterMonstre(Bestiaire.creerMonstreAleatoire());
+        }
+        
         System.out.println("\nNouvelle partie créée !");
         System.out.println("Votre équipe :");
         joueur.afficherEquipe();
@@ -132,49 +139,12 @@ public class Jeu {
         scanner.nextLine();
     }
     
-    private void boutique() {
-        while (true) {
-            System.out.println("\n=== BOUTIQUE ===");
-            System.out.println("Crédits : " + credits);
-            System.out.println("\n1 -> Potion de soin (+50 PV) - 5 crédits");
-            System.out.println("2 -> Filet de capture - 8 crédits");
-            System.out.println("3 -> Elixir de vie (résurrection) - 15 crédits");
-            System.out.println("4 -> Retour");
-            
-            System.out.print("\nVotre choix : ");
-            String choix = scanner.nextLine();
-            
-            switch (choix) {
-                case "1":
-                    acheterItem("Potion", 5);
-                    break;
-                case "2":
-                    acheterItem("Filet", 8);
-                    break;
-                case "3":
-                    acheterItem("Elixir", 15);
-                    break;
-                case "4":
-                    return;
-                default:
-                    System.out.println("Choix invalide !");
-            }
-        }
-    }
-
-    private void acheterItem(String nomItem, int prix) {
+    private void ouvrirBoutique() {
         if (joueur == null) {
             System.out.println("Créez d'abord une partie !");
             return;
         }
-        if (credits >= prix) {
-            credits -= prix;
-            joueur.getInventaire().ajouterObjet(nomItem, 1);
-            System.out.println(nomItem + " acheté avec succès !");
-            System.out.println("Crédits restants : " + credits);
-        } else {
-            System.out.println("Pas assez de crédits ! Il vous manque " + (prix - credits) + " crédits.");
-        }
+        credits = boutique.ouvrir(scanner, credits, joueur.getInventaire());
     }
     
     private void lancerCombat() {
@@ -183,17 +153,8 @@ public class Jeu {
             return;
         }
         
-        // Créer un monstre sauvage aléatoire
-        java.util.Random random = new java.util.Random();
-        String[] noms = {"Pyros", "Aqua", "Leafor", "Blazer", "Splash", "Racine"};
-        Element[] elements = {Element.FEU, Element.EAU, Element.PLANTE};
-        
-        String nom = noms[random.nextInt(noms.length)];
-        Element element = elements[random.nextInt(elements.length)];
-        int pvMax = 50 + random.nextInt(100);
-        int puissance = 10 + random.nextInt(20);
-        
-        Monstre monstreSauvage = new Monstre(nom, element, pvMax, puissance) {};
+        // Créer un monstre sauvage aléatoire depuis le Bestiaire
+        Monstre monstreSauvage = Bestiaire.creerMonstreAleatoire();
         
         // Créer un dresseur ennemi pour le combat
         Dresseur ennemi = new Dresseur("Sauvage");
@@ -204,6 +165,8 @@ public class Jeu {
         System.out.println("\n=== COMBAT ===");
         System.out.println("Un " + monstreSauvage.getNom() + " sauvage (" + monstreSauvage.getElement() + ") apparaît !");
         System.out.println("PV: " + monstreSauvage.getPvActuels() + "/" + monstreSauvage.getPvMax() + " - Attaque: " + monstreSauvage.getPuissanceAttaque());
+        
+        java.util.Random random = new java.util.Random();
         
         while (!combat.combatTermine()) {
             combat.afficherEtatCombat();
@@ -289,15 +252,13 @@ public class Jeu {
                         System.out.println("Ce monstre est KO ! Utilisez un Elixir.");
                         return;
                     }
-                    if (cible.getPvActuels() == cible.getPvMax()) {
-                        System.out.println("Ce monstre a déjà tous ses PV !");
-                        return;
-                    }
                     joueur.getInventaire().utiliserObjet("Potion");
                     cible.soigner(50);
                     System.out.println(cible.getNom() + " récupère 50 PV ! (" + cible.getPvActuels() + "/" + cible.getPvMax() + ")");
                 } catch (NumberFormatException e) {
                     System.out.println("Entrée invalide !");
+                } catch (MonstreFullPVException e) {
+                    System.out.println(e.getMessage());
                 }
                 break;
                 
@@ -320,7 +281,7 @@ public class Jeu {
                         return;
                     }
                     joueur.getInventaire().utiliserObjet("Elixir");
-                    cible.soigner(cible.getPvMax() / 2);
+                    cible.ressusciter(cible.getPvMax() / 2);
                     System.out.println(cible.getNom() + " est ressuscité avec " + cible.getPvActuels() + " PV !");
                 } catch (NumberFormatException e) {
                     System.out.println("Entrée invalide !");
@@ -333,20 +294,31 @@ public class Jeu {
                     return;
                 }
                 Monstre monstreSauvage = ennemi.getMonstreActif();
-                double pourcentagePV = (double) monstreSauvage.getPvActuels() / monstreSauvage.getPvMax() * 100;
-                if (pourcentagePV > 30) {
-                    System.out.println("Le monstre a trop de PV pour être capturé ! (" + String.format("%.0f", pourcentagePV) + "% restants, il faut < 30%)");
-                    return;
-                }
-                joueur.getInventaire().utiliserObjet("Filet");
-                java.util.Random random = new java.util.Random();
-                if (random.nextInt(100) < 70) {
-                    System.out.println("Capture réussie ! " + monstreSauvage.getNom() + " rejoint votre équipe !");
-                    joueur.ajouterMonstre(new Monstre(monstreSauvage.getNom(), monstreSauvage.getElement(), 
-                                        monstreSauvage.getPvMax(), monstreSauvage.getPuissanceAttaque()) {});
-                    monstreSauvage.recevoirDegats(monstreSauvage.getPvActuels()); // KO pour terminer combat
-                } else {
-                    System.out.println("Le monstre s'est échappé du filet !");
+                try {
+                    verifierCapturePossible(monstreSauvage);
+                    joueur.getInventaire().utiliserObjet("Filet");
+                    java.util.Random random = new java.util.Random();
+                    if (random.nextInt(100) < 70) {
+                        System.out.println("Capture réussie ! " + monstreSauvage.getNom() + " rejoint votre équipe !");
+                        // Créer le monstre capturé avec la bonne sous-classe
+                        Monstre monstreCapture;
+                        switch (monstreSauvage.getElement()) {
+                            case FEU:
+                                monstreCapture = new MonstreFeu(monstreSauvage.getNom(), monstreSauvage.getPvMax(), monstreSauvage.getPuissanceAttaque());
+                                break;
+                            case EAU:
+                                monstreCapture = new MonstreEau(monstreSauvage.getNom(), monstreSauvage.getPvMax(), monstreSauvage.getPuissanceAttaque());
+                                break;
+                            default:
+                                monstreCapture = new MonstrePlante(monstreSauvage.getNom(), monstreSauvage.getPvMax(), monstreSauvage.getPuissanceAttaque());
+                        }
+                        joueur.ajouterMonstre(monstreCapture);
+                        monstreSauvage.recevoirDegats(monstreSauvage.getPvActuels()); // KO pour terminer combat
+                    } else {
+                        System.out.println("Le monstre s'est échappé du filet !");
+                    }
+                } catch (CaptureImpossibleException e) {
+                    System.out.println(e.getMessage());
                 }
                 break;
                 
@@ -415,5 +387,16 @@ public class Jeu {
         joueur.afficherEquipe();
         
         enPartie = true;
+    }
+    
+    // Méthode pour vérifier si la capture est possible
+    private void verifierCapturePossible(Monstre monstre) throws CaptureImpossibleException {
+        double pourcentagePV = (double) monstre.getPvActuels() / monstre.getPvMax() * 100;
+        if (pourcentagePV > 30) {
+            throw new CaptureImpossibleException(
+                "Le monstre a trop de PV pour être capturé ! (" + 
+                String.format("%.0f", pourcentagePV) + "% restants, il faut < 30%)"
+            );
+        }
     }
 }

@@ -10,14 +10,8 @@ public class Combat {
     }
 
     public int calculerDegats(Monstre attaquant, Monstre defenseur) {
-        int degats = attaquant.getPuissanceAttaque();
-        
-        if (attaquant.getElement().estEfficaceContre(defenseur.getElement())) {
-            degats *= 2;
-            System.out.println("C'est super efficace !");
-        }
-        
-        return degats;
+        // Utilise le polymorphisme : chaque sous-classe a son propre calcul
+        return attaquant.calculerDegats(defenseur);
     }
 
     // Méthode avec gestion des exceptions
