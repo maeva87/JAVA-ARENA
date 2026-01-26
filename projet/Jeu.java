@@ -307,6 +307,11 @@ public class Jeu {
                             default:
                                 monstreCapture = new MonstrePlante(monstreSauvage.getNom(), monstreSauvage.getPvMax(), monstreSauvage.getPuissanceAttaque());
                         }
+                        // Conserver les PV actuels du monstre capturé
+                        int degatsSubis = monstreSauvage.getPvMax() - monstreSauvage.getPvActuels();
+                        if (degatsSubis > 0) {
+                            monstreCapture.recevoirDegats(degatsSubis);
+                        }
                         joueur.ajouterMonstre(monstreCapture);
                         monstreSauvage.recevoirDegats(monstreSauvage.getPvActuels()); // KO pour terminer combat
                     } else {
