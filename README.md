@@ -1,59 +1,56 @@
-# 🎮 JAVA ARENA
+# JAVA ARENA
 
-## 📋 Présentation du Projet
+Jeu de combat tactique au tour par tour en Java. Incarnez un dresseur, constituez une équipe de 3 monstres élémentaires et affrontez des créatures sauvages.
 
-**JAVA ARENA** est un jeu de combat tactique au tour par tour développé en Java. Incarnez un Dresseur et constituez une équipe de créatures élémentaires pour affronter des monstres sauvages dans des batailles captivantes.
+## Installation
 
-Ce projet implémente l'ensemble du moteur de jeu avec une architecture logicielle robuste, la logique métier complète et un système de sauvegarde persistant.
+**Prérequis** : Java 11+
 
-
----
-
-## 🚀 Installation & Lancement
-
-### Prérequis
-- **Java 11** ou supérieur
-- Un terminal/invite de commande
-
-### Étapes de Lancement
-
-#### 1. **Cloner le repository**
 ```bash
 git clone https://github.com/maeva87/JAVA-ARENA.git
-cd JAVA-ARENA/projet
+cd JAVA-ARENA
+javac projet/*.java
+java projet.Main
 ```
 
-#### 2. **Compiler le code**
-```bash
-javac *.java
+## Fonctionnalités
+
+- **Combat au tour par tour** avec système d'éléments (Feu > Plante > Eau > Feu)
+- **Équipe de 3 monstres** générée aléatoirement à la création
+- **Inventaire** : potions de soin, résurrection, outils de capture
+- **Boutique** pour acheter des objets avec les crédits gagnés
+- **Sauvegarde/Chargement** de la progression (format CSV)
+
+## Commandes
+
+| Action | Description |
+|--------|-------------|
+| Nouvelle partie | Crée une équipe avec 3 monstres aléatoires |
+| Charger partie | Restaure la progression sauvegardée |
+| Attaquer | Lance un combat contre un monstre sauvage |
+| Inventaire | Utilise un objet sur un monstre |
+| Boutique | Achète potions et outils |
+| Sauvegarder | Enregistre la progression |
+
+## Architecture
+
+```
+projet/
+├── Main.java           # Point d'entrée
+├── Jeu.java            # Logique principale
+├── Monstre.java        # Classe abstraite
+├── MonstreFeu.java     # Type Feu
+├── MonstreEau.java     # Type Eau
+├── MonstrePlante.java  # Type Plante
+├── Dresseur.java       # Joueur
+├── Inventaire.java     # Gestion des objets
+├── Combat.java         # Système de combat
+├── Bestiaire.java      # Catalogue des monstres
+├── Sauvegarde.java     # Persistance CSV
+└── *Exception.java     # Exceptions personnalisées
 ```
 
-#### 3. **Lancer le jeu**
-```bash
-java Main
-```
+## Licence
 
-Le jeu démarre directement dans la console avec le menu principal.
-
----
-
-### ⚙️ Actions Disponibles In-Game
-- **Attaquer** : Lancez un combat contre un monstre sauvage
-- **Utiliser un Objet** : Soignez, ressuscitez ou capturez un monstre
-- **Consulter l'Équipe** : Visualisez l'état de vos monstres (PV)
-- **Consulter le Joueur** : Consultez vos crédits et inventaire
-- **Boutique** : Achetez des potions et outils
-- **Sauvegarder** : Enregistrez votre progression
-
----
-
-### Principes POO Appliqués
-
-✅ **Héritage** : Hiérarchie Monstre → types spécialisés
-✅ **Polymorphisme** : Calcul de dégâts adapté au type élémentaire
-✅ **Encapsulation** : Getters/Setters pour tous les attributs
-✅ **Classe Abstraite** : Monstre générique non instanciable
-✅ **Collections Dynamiques** : ArrayList pour équipes, Map pour inventaire
-
----
+Projet académique - Ynov
 
