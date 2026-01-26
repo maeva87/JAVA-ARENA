@@ -106,11 +106,6 @@ public class Jeu {
         String nom = scanner.nextLine();
         joueur = new Dresseur(nom);
         
-        // Ajouter 3 monstres de base
-        joueur.ajouterMonstre(new Monstre("Flamby", Element.FEU, 100, 25) {});
-        joueur.ajouterMonstre(new Monstre("Aquali", Element.EAU, 150, 18) {});
-        joueur.ajouterMonstre(new Monstre("Leafy", Element.PLANTE, 100, 20) {});
-        
         System.out.println("\nNouvelle partie créée !");
         System.out.println("Votre équipe :");
         joueur.afficherEquipe();
