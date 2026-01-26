@@ -7,11 +7,13 @@ public class Jeu {
     private int credits;
     private Dresseur joueur;
     private boolean enPartie;
+    private Boutique boutique;
     
     public Jeu() {
         this.credits = 10;
         this.joueur = null;
         this.enPartie = false;
+        this.boutique = new Boutique();
     }
     
     public void demarrer() {
@@ -67,7 +69,7 @@ public class Jeu {
                     lancerCombat();
                     break;
                 case "4":
-                    boutique();
+                    ouvrirBoutique();
                     break;
                 case "5":
                     quitter();
@@ -137,49 +139,12 @@ public class Jeu {
         scanner.nextLine();
     }
     
-    private void boutique() {
-        while (true) {
-            System.out.println("\n=== BOUTIQUE ===");
-            System.out.println("Crédits : " + credits);
-            System.out.println("\n1 -> Potion de soin (+50 PV) - 5 crédits");
-            System.out.println("2 -> Filet de capture - 8 crédits");
-            System.out.println("3 -> Elixir de vie (résurrection) - 15 crédits");
-            System.out.println("4 -> Retour");
-            
-            System.out.print("\nVotre choix : ");
-            String choix = scanner.nextLine();
-            
-            switch (choix) {
-                case "1":
-                    acheterItem("Potion", 5);
-                    break;
-                case "2":
-                    acheterItem("Filet", 8);
-                    break;
-                case "3":
-                    acheterItem("Elixir", 15);
-                    break;
-                case "4":
-                    return;
-                default:
-                    System.out.println("Choix invalide !");
-            }
-        }
-    }
-
-    private void acheterItem(String nomItem, int prix) {
+    private void ouvrirBoutique() {
         if (joueur == null) {
             System.out.println("Créez d'abord une partie !");
             return;
         }
-        if (credits >= prix) {
-            credits -= prix;
-            joueur.getInventaire().ajouterObjet(nomItem, 1);
-            System.out.println(nomItem + " acheté avec succès !");
-            System.out.println("Crédits restants : " + credits);
-        } else {
-            System.out.println("Pas assez de crédits ! Il vous manque " + (prix - credits) + " crédits.");
-        }
+        credits = boutique.ouvrir(scanner, credits, joueur.getInventaire());
     }
     
     private void lancerCombat() {
