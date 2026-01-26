@@ -80,10 +80,10 @@ public class Jeu {
     }
 }
 
-private void acheterItem(int numeroItem, int prix) {
-    System.out.println("Achat de l'item " + numeroItem + " (pas encore implémenté)");
+    //private void acheterItem(int numeroItem, int prix) {
+        //System.out.println("Achat de l'item " + numeroItem + " (pas encore implémenté)");
     // pour plus tard : vérifier si assez de crédits, retirer credit du joueur, ajouter l'item
-}
+//}
     
     private void quitter() {
         System.out.println("Au revoir !");
