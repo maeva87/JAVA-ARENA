@@ -1,3 +1,5 @@
+package projet;
+
 public enum Element {
     FEU,
     EAU,
