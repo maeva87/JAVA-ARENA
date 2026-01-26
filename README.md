@@ -137,6 +137,8 @@ projet/
 
 <img width="621" height="263" alt="image" src="https://github.com/user-attachments/assets/68f4effb-5396-46b5-8ab2-ca80f7cdf40c" />
 
+<img width="436" height="346" alt="image" src="https://github.com/user-attachments/assets/c308c0e9-919e-43f5-846e-8c31a85bdfe4" />
+
 ## Licence
 
 Projet académique - Ynov
