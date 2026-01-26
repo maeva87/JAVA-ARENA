@@ -135,7 +135,7 @@ projet/
 
 ## Screenshots
 
-> *Ajoutez ici vos captures d'écran du jeu*
+<img width="621" height="263" alt="image" src="https://github.com/user-attachments/assets/68f4effb-5396-46b5-8ab2-ca80f7cdf40c" />
 
 ## Licence
 
