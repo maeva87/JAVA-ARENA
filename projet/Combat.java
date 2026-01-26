@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-package projet;
-
-public class Combat {
-    
-=======
 package projet;
 
 public class Combat {
@@ -80,5 +74,4 @@ public class Combat {
         System.out.println(dresseur2.getNom() + " : " + dresseur2.getMonstreActif());
         System.out.println("====================================\n");
     }
->>>>>>> main
 }
