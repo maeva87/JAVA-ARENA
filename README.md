@@ -2,6 +2,24 @@
 
 Jeu de combat tactique au tour par tour en Java. Incarnez un dresseur, constituez une équipe de 3 monstres élémentaires et affrontez des créatures sauvages.
 
+## Sommaire
+
+- [Installation](#installation)
+- [Fonctionnalités Détaillées](#fonctionnalités-détaillées)
+  - [Système de Combat](#système-de-combat)
+  - [Gestion de l'Équipe](#gestion-de-léquipe)
+  - [Inventaire & Boutique](#inventaire--boutique)
+  - [Sauvegarde](#sauvegarde)
+- [Particularités Techniques](#particularités-techniques)
+  - [Architecture POO](#architecture-poo)
+  - [Collections Utilisées](#collections-utilisées)
+  - [Exceptions Personnalisées](#exceptions-personnalisées)
+  - [Robustesse](#robustesse)
+- [Commandes](#commandes)
+- [Architecture](#architecture)
+- [Screenshots](#screenshots)
+- [Licence](#licence)
+
 ## Installation
 
 **Prérequis** : Java 11+
